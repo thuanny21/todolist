@@ -12,6 +12,10 @@ Vue.use(BootstrapVue)
 import Vuelidade from "vuelidate";
 Vue.use(Vuelidade);
 
+import axios from "axios";
+import { Model } from "vue-api-query";
+Model.$http = axios;
+
 Vue.config.productionTip = false
 
 new Vue({

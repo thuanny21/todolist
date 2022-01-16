@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import TasksModel from '@/models/TasksModel';
+
 export default {
   name: "List",
 
@@ -43,8 +45,8 @@ export default {
     }
   },
 
-  created() {
-    this.tasks = (localStorage.getItem("tasks")) ? JSON.parse(localStorage.getItem("tasks")) : [];
+  async created() {
+    this.tasks = await TasksModel.get();   
   },
 
   methods: {
