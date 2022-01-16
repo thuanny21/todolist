@@ -73,20 +73,19 @@ export default {
     }
   },
 
-  created() {
-    if(this.$route.params.index === 0 || this.$route.params.index !== undefined) {
+  async created() {
+    if(this.$route.params.taskId) {
       this.methodSave = "update";
-      let tasks = JSON.parse(localStorage.getItem("tasks"));
-      this.form = tasks[this.$route.params.index];
+      this.form = await TasksModel.find(this.$route.params.taskId);      
     }
   },
 
   methods: {
     saveTask() {
       if(this.methodSave === "update") {
-        let tasks = JSON.parse(localStorage.getItem("tasks"));
-        tasks[this.$route.params.index] = this.form;
-        localStorage.setItem("tasks", JSON.stringify(tasks));
+        
+        this.form.save();
+
         this.showToast("success", "Sucesso!", "Tarefa atualizada com sucesso");
         this.$router.push({ name: "list" });
         return;

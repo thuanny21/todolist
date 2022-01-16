@@ -12,11 +12,11 @@
       </div>
     </template>
     <template v-else>
-      <div v-for="(task, index) in tasks" :key="index">
+      <div v-for="(task) in tasks" :key="task.id">
         <b-card :title="task.subject" class="mb-2">
           <b-card-text>{{ task.description }}</b-card-text>
-          <b-button variant="outline-secondary" class="mr-2" @click="edit(index)">Editar</b-button>
-          <b-button variant="outline-danger" class="mr-2" @click="remove(task, index)">Excluir</b-button>
+          <b-button variant="outline-secondary" class="mr-2" @click="edit(task.id)">Editar</b-button>
+          <b-button variant="outline-danger" class="mr-2" @click="remove(task.id)">Excluir</b-button>
         </b-card>
       </div>
     </template>
@@ -50,13 +50,12 @@ export default {
   },
 
   methods: {
-    edit(index) {
-      this.$router.push({ name: "form", params: { index }});
+    edit(taskId) {
+      this.$router.push({ name: "form", params: { taskId }});
     },
 
-    remove(task, index) {
-      this.taskSelected = task;
-      this.taskSelected.index = index;
+    async remove(taskId) {
+      this.taskSelected = await TasksModel.find(taskId);    
       this.$refs.modalRemove.show();
     },
 
@@ -64,9 +63,9 @@ export default {
       this.$refs.modalRemove.hide();
     },
 
-    confirmRemoveTask() {
-      this.tasks.splice(this.taskSelected.index, 1);
-      localStorage.setItem("tasks", JSON.stringify(this.tasks));
+    async confirmRemoveTask() {
+      this.taskSelected.delete();
+      this.tasks = await TasksModel.get();      
       this.hideModal();
     }
   },
