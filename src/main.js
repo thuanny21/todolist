@@ -9,6 +9,9 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 Vue.use(BootstrapVue)
 
+import Vuelidade from "vuelidate";
+Vue.use(Vuelidade);
+
 Vue.config.productionTip = false
 
 new Vue({
