@@ -13,8 +13,9 @@
     </template>
     <template v-else>
       <div v-for="(task) in tasks" :key="task.id">
-        <b-card :title="task.subject" class="mb-2">
+        <b-card :title="task.subject" class="mb-2" :class="{ 'finished-task': isFinished(task) }">
           <b-card-text>{{ task.description }}</b-card-text>
+          <b-button variant="outline-secondary" class="mr-2" @click="updateStatus(task.id, status.FINISHED)">Concluir</b-button>
           <b-button variant="outline-secondary" class="mr-2" @click="updateStatus(task.id, status.ARCHIVED)">Arquivar</b-button>
           <b-button variant="outline-secondary" class="mr-2" @click="edit(task.id)">Editar</b-button>
           <b-button variant="outline-danger" class="mr-2" @click="remove(task.id)">Excluir</b-button>
@@ -52,7 +53,7 @@ export default {
   },
 
   async created() {
-    this.tasks = await TasksModel.get();   
+     this.tasks = await TasksModel.params({ status: [this.status.OPEN, this.status.FINISHED]}).get(); 
   },
 
   methods: {
@@ -71,7 +72,7 @@ export default {
 
     async confirmRemoveTask() {
       this.taskSelected.delete();
-      this.tasks = await TasksModel.get();      
+      this.tasks = await TasksModel.params({ status: [this.status.OPEN, this.status.FINISHED]}).get();    
       this.hideModal();
     },
 
@@ -82,6 +83,10 @@ export default {
 
       this.tasks = await TasksModel.params({ status: [this.status.OPEN, this.status.FINISHED]}).get();    
       this.showToast("success", "Sucesso!", "Status da Tarefa atualizado com sucesso");
+    },
+
+    isFinished(task) {
+       return task.status === this.status.FINISHED;
     }
   },
 
@@ -104,5 +109,14 @@ export default {
 .empty-data-image {
   width: 300px;
   height: 300px;
+}
+
+.finished-task {
+  opacity: 0.7;
+}
+
+.finished-task > .card-body > h4,
+.finished-task > .card-body > p {
+  text-decoration: line-through;
 }
 </style>
