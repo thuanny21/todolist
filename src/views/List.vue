@@ -18,7 +18,12 @@
         variant="outline-secondary"
         @click="filterTasks"
         class="mr-2"
-        >Buscar</b-button>
+      >Buscar</b-button>
+      <b-button 
+        variant="outline-secondary"
+        @click="clearFilter"
+        class="mr-2"
+      >Limpar filtro</b-button>
     </b-form>
 
 
@@ -122,7 +127,8 @@ export default {
     },
 
     async filterTasks() {
-      let filter = this.clean(this.filter);
+      let filter = { ...this.filter };
+      filter = this.clean(filter);
       this.tasks = await TasksModel.params(filter).get();
     },
 
@@ -133,6 +139,19 @@ export default {
         }
       }
       return obj;
+    },
+
+    async clearFilter() {
+      this.filter = {
+        subject: null,
+        status: null
+      };
+      this.tasks = await TasksModel.params({
+        status: [
+          this.status.OPEN,
+          this.status.FINISHED,
+        ]
+      }).get();
     }
   },
 
