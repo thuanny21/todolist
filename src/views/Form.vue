@@ -49,8 +49,7 @@
       <b-button 
         type="submit" 
         variant="outline-primary" 
-        @click="saveTask"
-        :disabled="!getValidation"
+        @click="saveTask"        
       >Salvar</b-button>
     </b-form>
   </div>
@@ -101,6 +100,10 @@ export default {
 
   methods: {
     saveTask() {
+      
+      this.$v.$touch();
+      if(this.$v.$error) return;
+
       if(this.methodSave === "update") {
 
         this.form.save();
