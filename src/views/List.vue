@@ -1,5 +1,27 @@
 <template>
   <div class="container mt-2">
+
+    <b-form inline class="mb-2">
+      <b-form-input
+        v-model="filter.subject"
+        id="subject"
+        placeholder="Ex: lavar carro"
+        class="mr-2"
+        autocomplete="off"
+      ></b-form-input>
+      <b-form-select
+        v-model="filter.status"
+        :options="optionsList"
+        class="mr-2"
+      ></b-form-select>
+      <b-button 
+        variant="outline-secondary"
+        @click="filterTasks"
+        class="mr-2"
+        >Buscar</b-button>
+    </b-form>
+
+
     <template v-if="isTasksEmpty">
       <div class="empty-data mt-2">
         <img src="../assets/empty-data.svg" class="empty-data-image">
@@ -48,8 +70,18 @@ export default {
     return {
       tasks: [],
       taskSelected: [],
-      status: Status
-    }
+      status: Status,
+      filter: {
+        subject: null,
+        status: null
+      },
+      optionsList: [
+        { value: null, text: "Selecione algum status" },
+        { value: Status.OPEN, text: "Aberto" },
+        { value: Status.FINISHED, text: "Concluído" },
+        { value: Status.ARCHIVED, text: "Arquivado" }
+      ]
+    };
   },
 
   async created() {
@@ -86,7 +118,21 @@ export default {
     },
 
     isFinished(task) {
-       return task.status === this.status.FINISHED;
+      return task.status === this.status.FINISHED;
+    },
+
+    async filterTasks() {
+      let filter = this.clean(this.filter);
+      this.tasks = await TasksModel.params(filter).get();
+    },
+
+    clean(obj) {
+      for(var propName in obj) {
+        if(obj[propName] === null || obj[propName] === undefined) {
+          delete obj[propName];
+        }
+      }
+      return obj;
     }
   },
 
