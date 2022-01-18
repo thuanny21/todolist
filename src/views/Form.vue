@@ -46,6 +46,21 @@
         </b-form-select>
       </b-form-group>
 
+      <b-form-group
+        label="Data de vencimento"
+        label-for="dateOverdue"
+      >
+
+      <b-form-datepicker
+        id="dateOverdue"
+        v-model="form.dateOverdue"
+        label-no-date-selected="Selecione uma data"
+        
+      >
+      </b-form-datepicker>
+        
+      </b-form-group>
+
       <b-button 
         type="submit" 
         variant="outline-primary" 
@@ -71,7 +86,8 @@ export default {
       form: {
         subject: "",
         description: "",
-        status: Status.OPEN
+        status: Status.OPEN,
+        dateOverdue: ""
       },
       methodSave: "new",
       optionsList: [

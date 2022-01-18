@@ -40,7 +40,17 @@
     </template>
     <template v-else>
       <div v-for="(task) in tasks" :key="task.id">
-        <b-card :title="task.subject" class="mb-2" :class="{ 'finished-task': isFinished(task) }">
+        <b-card  
+          class="mb-2" 
+          :class="{ 'finished-task': isFinished(task) }">
+
+          <div class="d-flex justify-content-between">
+          <b-card-title> {{ task.subject }} </b-card-title>
+          <span>
+            <b-badge> {{ overduePresenter(task.dateOverdue) }} </b-badge>
+          </span>
+          </div>
+
           <b-card-text>{{ task.description }}</b-card-text>
           <b-button variant="outline-secondary" class="mr-2" @click="updateStatus(task.id, status.FINISHED)">Concluir</b-button>
           <b-button variant="outline-secondary" class="mr-2" @click="updateStatus(task.id, status.ARCHIVED)">Arquivar</b-button>
@@ -152,6 +162,13 @@ export default {
           this.status.FINISHED,
         ]
       }).get();
+    },
+
+    overduePresenter(dateOverdue) {
+      if(!dateOverdue) {
+        return;
+      }
+      return dateOverdue.split('-').reverse().join('/')
     }
   },
 
