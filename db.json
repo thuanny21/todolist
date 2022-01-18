@@ -3,12 +3,8 @@
     {
       "id": 1,
       "subject": "teste json-server",
-      "description": "teste json-server"
-    },
-    {
-      "subject": "123",
-      "description": "123",
-      "id": 3
+      "description": "teste json-server",
+      "status":  1
     }
   ]
 }
