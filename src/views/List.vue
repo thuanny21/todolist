@@ -15,6 +15,7 @@
       <div v-for="(task) in tasks" :key="task.id">
         <b-card :title="task.subject" class="mb-2">
           <b-card-text>{{ task.description }}</b-card-text>
+          <b-button variant="outline-secondary" class="mr-2" @click="updateStatus(task.id, status.ARCHIVED)">Arquivar</b-button>
           <b-button variant="outline-secondary" class="mr-2" @click="edit(task.id)">Editar</b-button>
           <b-button variant="outline-danger" class="mr-2" @click="remove(task.id)">Excluir</b-button>
         </b-card>
@@ -34,14 +35,19 @@
 
 <script>
 import TasksModel from '@/models/TasksModel';
+import Status from "@/valueObjects/status";
+import ToastMixin from "@/mixins/toastMixin";
 
 export default {
   name: "List",
 
+  mixins: [ToastMixin],
+
   data() {
     return {
       tasks: [],
-      taskSelected: []
+      taskSelected: [],
+      status: Status
     }
   },
 
@@ -67,6 +73,15 @@ export default {
       this.taskSelected.delete();
       this.tasks = await TasksModel.get();      
       this.hideModal();
+    },
+
+    async updateStatus(taskId, status) {
+      let task = await TasksModel.find(taskId);
+      task.status = status;
+      await task.save();
+
+      this.tasks = await TasksModel.params({ status: [this.status.OPEN, this.status.FINISHED]}).get();    
+      this.showToast("success", "Sucesso!", "Status da Tarefa atualizado com sucesso");
     }
   },
 
