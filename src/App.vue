@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <b-navbar toggleable="lg" type="dark" variant="dark">
+    <b-navbar toggleable="lg" type="dark" variant="dark" v-if="notIsLoginPage">
       <b-navbar-brand href="#">ToDo List</b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -17,6 +17,16 @@
     </transition>
   </div>
 </template>
+
+<script>
+export default {
+  computed: {
+    notIsLoginPage() {
+      return this.$route.name !== "login";
+    }
+  }
+}
+</script>
 
 <style>
 .fade-enter-active, .fade-leave-active {
