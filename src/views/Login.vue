@@ -13,7 +13,8 @@
               type="email"
               placeholder="josesilva@email.com"
               autocomplete="off"
-              v-model="form.email"
+              v-model.trim="$v.form.email.$model"
+              :state="getValidation('email')"
             ></b-form-input>
           </b-form-group>
 
@@ -27,8 +28,9 @@
             <b-form-input
               id="password"
               type="password"
-              placeholder="Digite sua senha"              
-              v-model="form.password"
+              placeholder="Digite sua senha"         
+              v-model.trim="$v.form.password.$model"
+              :state="getValidation('password')"
             ></b-form-input>
           </b-form-group>
 
@@ -61,6 +63,8 @@
 </template>
 
 <script>
+import { required, minLength, email } from "vuelidate/lib/validators";
+
 export default {
   data() {
     return {
@@ -71,10 +75,38 @@ export default {
     }
   },
 
-  methods() {
-    login(),
+  validations: {
+    form: {
+      email: {
+        required,
+        email
+      },
+      password: {
+        required,
+        minLength: minLength(6)
+      }
+    }
+  },
 
-    register()
+  methods: {
+    login() {
+      this.$v.$touch();
+      if(this.$v.$error) {
+        return;
+      }
+    },
+
+    register() {
+
+    },
+
+    getValidation(field) {
+      if(this.$v.form.$dirty === false) {
+        return null;
+      }
+
+      return !this.$v.form[field].$error;
+    }
   }
 }
 </script>
