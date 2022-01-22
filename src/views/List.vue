@@ -25,9 +25,13 @@
         class="mr-2"
       >Limpar filtro</b-button>
     </b-form>
+    <template v-if="isLoading">
+      <div class="loading-spin">
+        <b-spinner style="width: 5rem; height: 5rem;"></b-spinner>
+      </div>
+    </template>
 
-
-    <template v-if="isTasksEmpty">
+    <template v-if="isTasksEmpty && !isLoading">
       <div class="empty-data mt-2">
         <img src="../assets/empty-data.svg" class="empty-data-image">
         <b-button 
@@ -38,7 +42,7 @@
           >Criar tarefa </b-button>
       </div>
     </template>
-    <template v-else>
+    <template v-if="!isTasksEmpty && !isLoading">
       <div v-for="(task) in tasks" :key="task.id">
         <b-card  
           class="mb-2" 
@@ -97,12 +101,15 @@ export default {
         { value: Status.OPEN, text: "Aberto" },
         { value: Status.FINISHED, text: "Concluído" },
         { value: Status.ARCHIVED, text: "Arquivado" }
-      ]
+      ],
+      isLoading: false
     };
   },
 
   async created() {
-     this.tasks = await TasksModel.params({ status: [this.status.OPEN, this.status.FINISHED]}).get(); 
+    this.isLoading = true;
+    this.tasks = await TasksModel.params({ status: [this.status.OPEN, this.status.FINISHED]}).get(); 
+    this.isLoading = false;
   },
 
   methods: {
@@ -223,5 +230,12 @@ export default {
 .finished-task > .card-body > h4,
 .finished-task > .card-body > p {
   text-decoration: line-through;
+}
+
+.loading-spin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 65vh;
 }
 </style>
