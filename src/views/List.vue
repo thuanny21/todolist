@@ -18,12 +18,16 @@
         variant="outline-secondary"
         @click="filterTasks"
         class="mr-2"
-      >Buscar</b-button>
+        v-b-tooltip.hover
+        title="Buscar"
+      ><i class="fas fa-search"></i></b-button>
       <b-button 
         variant="outline-secondary"
         @click="clearFilter"
         class="mr-2"
-      >Limpar filtro</b-button>
+        v-b-tooltip.hover
+        title="Limpar filtro"
+      ><i class="fas fa-times"></i></b-button>
     </b-form>
     <template v-if="isLoading">
       <div class="loading-spin">
@@ -58,10 +62,38 @@
           </div>
 
           <b-card-text>{{ task.description }}</b-card-text>
-          <b-button variant="outline-secondary" class="mr-2" @click="updateStatus(task.id, status.FINISHED)">Concluir</b-button>
-          <b-button variant="outline-secondary" class="mr-2" @click="updateStatus(task.id, status.ARCHIVED)">Arquivar</b-button>
-          <b-button variant="outline-secondary" class="mr-2" @click="edit(task.id)">Editar</b-button>
-          <b-button variant="outline-danger" class="mr-2" @click="remove(task.id)">Excluir</b-button>
+          <b-button 
+            variant="outline-secondary" 
+            class="mr-2" @click="updateStatus(task.id, status.FINISHED)"
+            v-b-tooltip.hover
+            title="Concluir"
+            >
+            <i class="fas fa-check"></i>
+          </b-button>
+          <b-button 
+            variant="outline-secondary" 
+            class="mr-2" @click="updateStatus(task.id, status.ARCHIVED)"
+            v-b-tooltip.hover
+            title="Arquivar"
+            >
+            <i class="fas fa-archive"></i>
+          </b-button>
+          <b-button 
+            variant="outline-secondary" 
+            class="mr-2" @click="edit(task.id)"
+            v-b-tooltip.hover
+            title="Editar"
+            >
+            <i class="fas fa-edit"></i>
+          </b-button>
+          <b-button 
+            variant="outline-danger" 
+            class="mr-2" @click="remove(task.id)"
+            v-b-tooltip.hover
+            title="Excluir"
+            >
+            <i class="fas fa-times"></i>
+          </b-button>
         </b-card>
       </div>
     </template>

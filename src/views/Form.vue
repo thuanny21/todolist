@@ -65,7 +65,7 @@
         type="submit" 
         variant="outline-primary" 
         @click="saveTask"        
-      >Salvar</b-button>
+      ><i class="fas fa-save"></i> Salvar</b-button>
     </b-form>
   </div>
 </template>
