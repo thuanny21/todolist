@@ -35,6 +35,7 @@ const router = new VueRouter({
   routes
 })
 
+//autenticação da rotas, bloqueia as outras paginas sem ter logado.
 router.beforeEach((to, from, next) => {
   if(to.name !== "login" && to.name !== "register" && !localStorage.getItem('authUser')) {
     next({name: 'login'});
