@@ -1,64 +1,8 @@
 {
   "tasks": [
-    {
-      "id": 1,
-      "subject": "teste json-server",
-      "description": "teste json-server",
-      "status": 2
-    },
-    {
-      "subject": "123",
-      "description": "123",
-      "status": 3,
-      "id": 2
-    },
-    {
-      "subject": "teste 1",
-      "description": "teste 1",
-      "status": 3,
-      "id": 3
-    },
-    {
-      "subject": "teste 2",
-      "description": "teste 2",
-      "status": 3,
-      "id": 4
-    },
-    {
-      "subject": "teste 3",
-      "description": "teste 3",
-      "status": 2,
-      "id": 5
-    },
-    {
-      "subject": "teste 5",
-      "description": "teste 5",
-      "status": 1,
-      "dateOverdue": "",
-      "id": 6
-    },
-    {
-      "subject": "teste 6",
-      "description": "teste 6",
-      "status": 1,
-      "dateOverdue": "2022-01-28",
-      "id": 7
-    },
-    {
-      "subject": "teste 7",
-      "description": "teste 7",
-      "status": 1,
-      "dateOverdue": "2022-01-18",
-      "id": 8
-    }
+    
   ],
   "users": [
-    {
-      "name": "teste",
-      "email": "teste@teste.com.br",
-      "password": "teste123",
-      "confirmPassword": "teste123",
-      "id": 1
-    }
+    
   ]
 }

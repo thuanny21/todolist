@@ -114,6 +114,7 @@ import TasksModel from '@/models/TasksModel';
 import Status from "@/valueObjects/status";
 import ToastMixin from "@/mixins/toastMixin";
 
+
 export default {
   name: "List",
 
@@ -134,14 +135,13 @@ export default {
         { value: Status.FINISHED, text: "Concluído" },
         { value: Status.ARCHIVED, text: "Arquivado" }
       ],
-      isLoading: false
+      isLoading: false,
+      statusList: [Status.OPEN, Status.FINISHED],
     };
   },
 
   async created() {
-    this.isLoading = true;
-    this.tasks = await TasksModel.params({ status: [this.status.OPEN, this.status.FINISHED]}).get(); 
-    this.isLoading = false;
+    this.tasks = await this.getTasks();
   },
 
   methods: {
@@ -160,7 +160,7 @@ export default {
 
     async confirmRemoveTask() {
       this.taskSelected.delete();
-      this.tasks = await TasksModel.params({ status: [this.status.OPEN, this.status.FINISHED]}).get();    
+      this.tasks = await this.getTasks();
       this.hideModal();
     },
 
@@ -169,7 +169,7 @@ export default {
       task.status = status;
       await task.save();
 
-      this.tasks = await TasksModel.params({ status: [this.status.OPEN, this.status.FINISHED]}).get();    
+      this.tasks = await this.getTasks();    
       this.showToast("success", "Sucesso!", "Status da Tarefa atualizado com sucesso");
     },
 
@@ -180,6 +180,7 @@ export default {
     async filterTasks() {
       let filter = { ...this.filter };
       filter = this.clean(filter);
+      filter.userId = JSON.parse(localStorage.getItem('authUser')).id;
       this.tasks = await TasksModel.params(filter).get();
     },
 
@@ -197,12 +198,7 @@ export default {
         subject: null,
         status: null
       };
-      this.tasks = await TasksModel.params({
-        status: [
-          this.status.OPEN,
-          this.status.FINISHED,
-        ]
-      }).get();
+      this.tasks = await this.getTasks();
     },
 
     overduePresenter(dateOverdue) {
@@ -231,6 +227,19 @@ export default {
       }
 
       return 'light';
+    },
+
+    async getTasks() {
+      this.isLoading = true;
+      let self = this;
+      setTimeout(function(){ self.isLoading = false;
+      }, 3000);
+      return await TasksModel
+      .params({
+        userId: JSON.parse(localStorage.getItem('authUser')).id,
+        status: this.statusList,
+      })
+      .get();
     }
   },
 

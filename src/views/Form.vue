@@ -87,7 +87,8 @@ export default {
         subject: "",
         description: "",
         status: Status.OPEN,
-        dateOverdue: ""
+        dateOverdue: "",
+        userId: JSON.parse(localStorage.getItem('authUser')).id
       },
       methodSave: "new",
       optionsList: [
