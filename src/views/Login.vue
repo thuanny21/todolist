@@ -97,7 +97,7 @@ export default {
     },
 
     register() {
-
+      this.$router.push({ name: 'register' });
     },
 
     getValidation(field) {
